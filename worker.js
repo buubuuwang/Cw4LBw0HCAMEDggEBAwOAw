@@ -3,7 +3,7 @@
 	var co = require('co'); 
 	
 	var BeanstalkHandler = require('./beanstalk_handler').BeanstalkHandler;
-	var w = new BeanstalkHandler('127.0.0.1:11300');
+	var w = new BeanstalkHandler('challenge.aftership.net:11300');
 	var tube_name = 'buubuuwang';
 	
 	var hkd_to_usd = require('./data_handler').hkd_to_usd;
