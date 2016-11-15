@@ -1,7 +1,7 @@
 'use strict'
 var request = require("request");
 var MongoClient = require('mongodb').MongoClient;
-var URL = 'mongodb://localhost:27017/exrates'
+var URL = 'mongodb://localhost:27017/buubuuwang'
 
 var hkd_to_usd;
 exports.hkd_to_usd = hkd_to_usd = function (payload) {

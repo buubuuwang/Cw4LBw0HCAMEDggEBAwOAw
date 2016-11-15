@@ -1,3 +1,9 @@
+# How to use?
+step1. node "producer.js" to seed a job
+step2. node worker.js to run as a get exchange rate worker
+
+The database name of mongodb I used is "my_github_username" and the collection name is "hkd_to_usd" 
+
 # Want to join us?
 
 We always looking for talent.
