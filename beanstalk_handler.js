@@ -21,7 +21,7 @@
 						this.connection = conn;
 						conn.put(priority, delay, ttr, JSON.stringify(job_data), function(err, job_id) {
 							if (err) return reject(err);
-							console.log('put the job success successfully: ' + job_id);
+							//console.log('put the job successfully: ' + job_id);
 							resolve(job_data);
 						});
 					};
@@ -38,8 +38,8 @@
 						this.connection.watch(tubes, function(err) {
 							this.connection.reserve(function(err, job_id, data) {
 								if(err) return reject(err);
-								console.log('Consumer got job: ' + job_id);
-								console.log('job data: ' + data);
+								console.log('Consumer reserve a job: id ' + job_id);
+								//console.log('job data: ' + data);
 								var job_data = JSON.parse(data);
 								job_data['job_id'] = job_id;
 								resolve(job_data);
