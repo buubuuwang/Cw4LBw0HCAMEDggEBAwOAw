@@ -1,3 +1,18 @@
+/** 
+ * payload
+ * @property {string} [type] - point out what's the goal of payload
+ * @property {string} [retries] - how many time did it reput to the tube
+ * @property {number} [data] - the object of currency from HKD to USD
+ * @property {number} [job_id] - the job_id will be added into payload after getting a job from beanstalk server
+ */
+
+/**
+ * Create a new BeanstalkHandler
+ * @constructor
+ * @param {string} server - beanstalk server host and port
+ * @constructor
+ */
+
 (function() {
 	var client = require('beanstalk_client').Client;
 	var BeanstalkHandler = (function() {
@@ -21,7 +36,7 @@
 						this.connection = conn;
 						conn.put(priority, delay, ttr, JSON.stringify(job_data), function(err, job_id) {
 							if (err) return reject(err);
-							//console.log('put the job successfully: ' + job_id);
+							console.log('BeanstalkHandler put the job successfully : ' + job_id);
 							resolve(job_data);
 						});
 					};

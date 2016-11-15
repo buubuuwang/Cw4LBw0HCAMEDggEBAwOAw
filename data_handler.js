@@ -16,10 +16,10 @@ exports.hkd_to_usd = hkd_to_usd = function (payload) {
 				return reject(payload);
 			}
 			var rate = JSON.parse(body)['rates'][to];
-			//round off to 2 decmicals in STRING type
-			payload['rate'] = rate.toFixed((2));
 			//timestamp                            
-			payload['create_at'] = new Date();
+			payload['data']['created_at'] = new Date(Date.now());
+			//round off to 2 decmicals in STRING type
+			payload['data']['rate'] = rate.toFixed((2));
 			resolve(payload);
 		});
 	})

@@ -1,3 +1,19 @@
+/**
+ * @property {number} [delay = 0] - If request is succeed, reput to the tube and delay with 60s or 3s for failed request.
+ * @property {number} [tries_limit = 10] - Stop the task if you tried 10 succeed attempts
+ * @property {number} [tries = 0] - The number of succeed attempts
+ * @property {number} [retries_limit = 3] - If failed more than 3 times in total (not consecutive), bury the job. 
+ * @property {object} [failed_payload = payload] - if request failed , the retries of attributes of a job payload will be added one time.
+ *
+ */
+
+/**
+ * Create a new woker
+ * @constructor
+ * @param {object} arguments
+ * @constructor
+ */
+
 (function(){
 	var Promise = require("bluebird"); 
 	var co = require('co'); 
@@ -12,7 +28,7 @@
 	var delay = 0;
 	var tries_limit = 10;
 	var tries = 0;
-	var retries_limit = 3;
+	var retries_limit = 2;
 	var failed_payload = null
 
 	var worker = function (){
@@ -36,6 +52,7 @@
 			if(tries < tries_limit){
 				return w.put_job(tube_name,0,delay,0,failed_payload).then(function(payload){
 			        console.log('reput job to tube and delay with '+ delay+'s...OK');
+					console.log('waiting for 60s ........');
 					console.log('--------------------- end -----------------------');
 					return worker();
 				})
@@ -61,6 +78,7 @@
 						return w.put_job(tube_name,0,delay,0,failed_payload);
 					}).then(function(payload){
 						console.log('reput job to tube and delay with '+ delay+'s...OK');
+						console.log('waiting for 3s ........');
 						console.log('--------------------- end -----------------------');
 						return worker();
 					});
