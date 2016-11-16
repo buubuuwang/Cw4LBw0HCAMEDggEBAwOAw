@@ -36,7 +36,7 @@
 						this.connection = conn;
 						conn.put(priority, delay, ttr, JSON.stringify(job_data), function(err, job_id) {
 							if (err) return reject(err);
-							console.log('BeanstalkHandler put the job successfully : ' + job_id);
+							//console.log('BeanstalkHandler put the job successfully : ' + job_id);
 							resolve(job_data);
 						});
 					};
@@ -53,7 +53,7 @@
 						this.connection.watch(tubes, function(err) {
 							this.connection.reserve(function(err, job_id, data) {
 								if(err) return reject(err);
-								console.log('Consumer reserve a job: id ' + job_id);
+								//console.log('Consumer reserve a job: id ' + job_id);
 								//console.log('job data: ' + data);
 								var job_data = JSON.parse(data);
 								job_data['job_id'] = job_id;
@@ -68,7 +68,7 @@
 			return new Promise(function(resolve, reject){
 				this.connection.destroy(job_id, function(err) {
 					if(err) return reject(new Error(err));
-					resolve(payload);
+					resolve("destroy the job successfully");
 				});
 			})
 		}
@@ -76,7 +76,7 @@
 			return new Promise(function(resolve, reject){
 				this.connection.bury(job_id,client.LOWEST_PRIORITY, function(err) {
 					if(err) return reject(new Error(err));
-					resolve(job_id);
+					resolve('bury the job successfully');
 				});
 			})
 		}

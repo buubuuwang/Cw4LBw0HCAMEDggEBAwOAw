@@ -1,6 +1,7 @@
 'use strict'
 var request = require("request");
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 var URL = 'mongodb://localhost:27017/buubuuwang'
 
 var hkd_to_usd;
@@ -13,7 +14,7 @@ exports.hkd_to_usd = hkd_to_usd = function (payload) {
 			method: "GET"
 		}, function(error, response, body) {
 			if (error || !body) {
-				return reject(payload);
+				return reject(new Error('get_rates_failed'));
 			}
 			var rate = JSON.parse(body)['rates'][to];
 			//timestamp                            
@@ -31,6 +32,7 @@ exports.save_to_mongodb = save_to_mongodb = function (payload){
 		MongoClient.connect(URL, function(err, db) {
 			if (err) reject(err);
 			var collection = db.collection('hkd_to_usd')
+			payload['_id'] = new ObjectID();
 			collection.insert(payload, function(err, result) {
 				if(err) return reject(new Error(err));
 				resolve(payload);

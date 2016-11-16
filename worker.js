@@ -36,6 +36,7 @@
 			return w.get_job(tube_name);
 		}).then(function(payload){
 			console.log("get a job...OK");
+			failed_payload = payload;
 			return hkd_to_usd(payload);
 		}).then(function(payload){
 			console.log("get the exchange rate...OK");
@@ -62,17 +63,13 @@
 				return w.stop();
 			}
 		}).catch(function (err) {
-			if(err instanceof Error) {
-				console.log('Error :',err);
-				return w.stop();
-			} else {
+			if (err.message ===  "get_rates_failed") {
 			    console.log("failed to get the exchange rate ...");
-				var retries = err['retries'];
-				var job_id = err['job_id'];
+				var retries = failed_payload['retries'];
+				var job_id = failed_payload['job_id'];
 				//If request is failed, reput to the tube and delay with 3s.
 				if(retries < retries_limit){
-					err['retries']++;
-					failed_payload = err;
+					failed_payload['retries']++;
 					delay = 3;
 					return w.destroy_job(job_id,failed_payload).then(function(payload){
 						return w.put_job(tube_name,0,delay,0,failed_payload);
@@ -88,6 +85,9 @@
 					console.log('task failed... bury the job');
 					return w.bury_job(job_id);
 				}
+			} else {
+				console.log('Error :',err);
+				return w.stop();
 			}
 		});
 	}
